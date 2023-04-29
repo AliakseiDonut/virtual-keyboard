@@ -10,14 +10,14 @@ const russianSymbolsShift = 'Ё!"№;%:?*()_+ЙЦУКЕНГШЩЗХЪ/ФЫВАП
 function genSymbolKey(symbol){
     const key = document.createElement("div");
     key.textContent = symbol;
-    key.classList.add("symbol-key", "size1");
+    key.classList.add("key", "key_symbol", "size1");
     return key;
 }
 
 function genEventKey(text, size){
     const key = document.createElement("div");
     key.textContent = text;
-    key.classList.add("event-key", size);
+    key.classList.add("key", "key_event", size);
     return key;
 }
 
@@ -58,3 +58,11 @@ function genKeyboard(){
 }
 
 genKeyboard();
+
+const keyboard = document.querySelector(".keyboard");
+
+keyboard.addEventListener('click', event => {
+    if(event.target.classList.contains("key_symbol")){
+        textArea.value += event.target.textContent;
+    }
+})

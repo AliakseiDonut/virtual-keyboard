@@ -1,3 +1,8 @@
+textarea{
+    width: 720px;
+    height: 200px;
+}
+
 .size1{
     width: 40px;
     height: 40px;
@@ -32,18 +37,24 @@
     transform: rotate(-90deg);
 }
 
-.symbol-key{
+.key{
     border: 1px solid black;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.event-key{
-    border: 1px solid black;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.key:hover{
+    background-color: darkcyan;
+    cursor: pointer;
+}
+
+.key_symbol{
+    background-color: rgb(85, 85, 85);
+}
+
+.key_event{
+    background-color: rgb(65, 63, 63);
 }
 
 .keyboard{
@@ -55,4 +66,7 @@
     height: 251px;
     gap: 8px 5px;
     justify-content: space-between;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color: white;
+    background-color: dimgray;
 }
