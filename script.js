@@ -1,7 +1,7 @@
 const textArea = document.createElement("textarea");
 document.body.append(textArea);
 
-const englishSymbols = "`1234567890-=qwertyuiop[]\asdfghjkl;'zxcvbnm,./";
+const englishSymbols = "`1234567890-=qwertyuiop[]\\asdfghjkl;'zxcvbnm,./";
 const englishSymbolShift = '~!@#$%^&*()_+QWERTYUIOP{}|ASDFGHJKL:"ZXCVBNM<>?';
 
 const russianSymbols = "ё1234567890-=йцукенгшщзхъ\фывапролджэячсмитьбю.";
@@ -27,13 +27,13 @@ function genKeyboard(){
 
     englishSymbols.split("").forEach((el, i) => {
         keyboard.append(genSymbolKey(el));
-        if(i == 11){
+        if(i == 12){
             keyboard.append(genEventKey("Backspace", "size5"), genEventKey("Tab", "size3"));
-        }else if(i == 24){
+        }else if(i == 25){
             keyboard.append(genEventKey("Del", "size2"), genEventKey("CapsLock", "size5"));
-        }else if(i == 35){
+        }else if(i == 36){
             keyboard.append(genEventKey("Enter", "size4"), genEventKey("Shift", "size5"));
-        }else if(i == 45){
+        }else if(i == 46){
             const leftArr = genEventKey("▲", "size1");
             const rightArr = genEventKey("▼", "size1");
             leftArr.classList.add("rotate-arr"); 

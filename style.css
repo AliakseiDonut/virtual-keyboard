@@ -34,16 +34,25 @@
 
 .symbol-key{
     border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .event-key{
     border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .keyboard{
-    width: 1000px;
-    height: 1000px;
     border: 1px solid black;
     display: flex;
     flex-wrap: wrap;
+    padding: 5px;
+    width: 715px;
+    height: 251px;
+    gap: 8px 5px;
+    justify-content: space-between;
 }
