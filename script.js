@@ -45,7 +45,7 @@ function genKeyboard(){
                 genEventKey("Ctrl", "size1"), 
                 genEventKey("Win", "size1"), 
                 genEventKey("Alt", "size1"), 
-                genEventKey("", "size6"), 
+                genEventKey(" ", "size6"), 
                 genEventKey("Alt", "size1"),
                 leftArr,                
                 genEventKey("▼", "size1"), 
@@ -61,8 +61,32 @@ genKeyboard();
 
 const keyboard = document.querySelector(".keyboard");
 
+
+
 keyboard.addEventListener('click', event => {
-    if(event.target.classList.contains("key_symbol")){
-        textArea.value += event.target.textContent;
+    
+    let cursorPos = textArea.selectionStart;
+    let textBeforeCursor = textArea.value.substring(0, cursorPos);
+    let textAfterCursor = textArea.value.substring(cursorPos);
+    let element = event.target;
+    
+    if(element.classList.contains("key_symbol") || element.textContent == " "){
+        textArea.value = textBeforeCursor + element.textContent + textAfterCursor;
+        textArea.selectionEnd = cursorPos + 1;
+    }else if(element.textContent == "Backspace"){
+        textBeforeCursor = textArea.value.substring(0, cursorPos - 1);
+        textArea.value = textBeforeCursor + textAfterCursor;
+        textArea.selectionEnd = cursorPos - 1;
+    }else if(element.textContent == "Del"){
+        textAfterCursor = textArea.value.substring(cursorPos + 1);
+        textArea.value = textBeforeCursor + textAfterCursor;
+        textArea.selectionEnd = cursorPos;
+    }else if(element.textContent == "Tab"){
+        textArea.value = textBeforeCursor + "    " + textAfterCursor;
+        textArea.selectionEnd = cursorPos + 1;
     }
 })
+
+textArea.addEventListener('click', event => {
+
+});
