@@ -11,8 +11,6 @@ const russianSymbolsShift = 'Ё!"№;%:?*()_+ЙЦУКЕНГШЩЗХЪ/ФЫВАП
 
 let symbolKeys;
 
-localStorage.setItem("language", "english");
-
 function genSymbolKey(symbol){
     const key = document.createElement("div");
     key.textContent = symbol;
@@ -111,7 +109,13 @@ function genKeyboard(language, shift = false, caps = false){
         el.classList.add(el.textContent);
     })
 }
-genKeyboard(localStorage.getItem("language"));
+
+if(localStorage.language){
+    genKeyboard(localStorage.language);
+}else{
+    genKeyboard("russian");
+}    
+
 
 function keyboardHandler (){
     const keyboard = document.querySelector(".keyboard");    
