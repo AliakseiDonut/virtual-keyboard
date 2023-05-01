@@ -59,7 +59,7 @@ textarea{
 
 .key_active{
     background-color: rgb(17, 187, 187);
-    border-radius: 5px;
+    border-radius: 10px;
 }
 
 .keyboard{

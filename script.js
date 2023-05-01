@@ -83,8 +83,8 @@ function genKeyboard(language, shift = false, caps = false){
         }else if(i == 46){
             const leftArr = genEventKey("▲", "size1");
             const rightArr = genEventKey("▼", "size1");
-            leftArr.classList.add("rotate-arr"); 
-            rightArr.classList.add("rotate-arr"); 
+            leftArr.classList.add("rotate-arr", "left-arr"); 
+            rightArr.classList.add("rotate-arr", "right-arr"); 
 
             const shiftKey = genEventKey("Shift", "size4");
             
@@ -166,6 +166,10 @@ function keyboardHandler (){
             keyboard.remove();
             genKeyboard("english", true);
         }
+    }else if(element.classList.contains("left-arr")){
+        textArea.selectionEnd = cursorPos - 1;
+    }else if(element.classList.contains("right-arr")){
+        textArea.selectionStart = cursorPos + 1;
     }
 }
 
@@ -217,6 +221,14 @@ window.addEventListener('keydown', event => {
             document.querySelector(".Space").classList.add("key_active");
         }else if(event.key == "Meta"){
             document.querySelector(".Win").classList.add("key_active");
+        }else if(event.key == "ArrowLeft"){
+            document.querySelector(".left-arr").classList.add("key_active");
+        }else if(event.key == "ArrowRight"){
+            document.querySelector(".right-arr").classList.add("key_active");
+        }else if(event.key == "ArrowUp"){
+            document.querySelector(".▲").classList.add("key_active");
+        }else if(event.key == "ArrowDown"){
+            document.querySelector(".▼").classList.add("key_active");
         }
     }
 });
@@ -244,11 +256,14 @@ window.addEventListener('keyup', event => {
         }else if(event.key == "Alt"){
             document.querySelectorAll(".Alt")[0].classList.remove("key_active");
             document.querySelectorAll(".Alt")[1].classList.remove("key_active");
+        }else if(event.key == "ArrowLeft"){
+            document.querySelector(".left-arr").classList.remove("key_active");
+        }else if(event.key == "ArrowRight"){
+            document.querySelector(".right-arr").classList.remove("key_active");
+        }else if(event.key == "ArrowUp"){
+            document.querySelector(".▲").classList.remove("key_active");
+        }else if(event.key == "ArrowDown"){
+            document.querySelector(".▼").classList.remove("key_active");
         }
     }   
 });
-
-
-window.addEventListener('keydown', event => {
-    console.log(event.key);
-})
