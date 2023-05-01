@@ -1,11 +1,15 @@
 const textArea = document.createElement("textarea");
 document.body.append(textArea);
 
+const keysCodes = [192, 49, 50, 51, 52, 53, 54, 55, 56, 57, 48, 189, 187, 81, 87, 69, 82, 84, 89, 85, 73, 79, 80, 219, 221, 220, 65, 83, 68, 70, 71, 72, 74, 75, 76, 186, 222, 90, 88, 67, 86, 66, 78, 77, 188, 190, 191];
+
 const englishSymbols = "`1234567890-=qwertyuiop[]\\asdfghjkl;'zxcvbnm,./";
 const englishSymbolsShift = '~!@#$%^&*()_+QWERTYUIOP{}|ASDFGHJKL:"ZXCVBNM<>?';
 
 const russianSymbols = "ё1234567890-=йцукенгшщзхъ\\фывапролджэячсмитьбю.";
 const russianSymbolsShift = 'Ё!"№;%:?*()_+ЙЦУКЕНГШЩЗХЪ/ФЫВАПРОЛДЖЭЯЧСМИТЬБЮ,'
+
+let symbolKeys;
 
 function genSymbolKey(symbol){
     const key = document.createElement("div");
@@ -87,7 +91,7 @@ function genKeyboard(language, shift = false, caps = false){
                 genEventKey("Ctrl", "size1"), 
                 genEventKey("Win", "size1"), 
                 genEventKey("Alt", "size1"), 
-                genEventKey(" ", "size6"), 
+                genEventKey("Space", "size6"), 
                 genEventKey("Alt", "size1"),
                 leftArr,                
                 genEventKey("▼", "size1"), 
@@ -100,6 +104,10 @@ function genKeyboard(language, shift = false, caps = false){
         keyboardHandler();
     })
     document.body.append(keyboard);
+    symbolKeys = document.querySelectorAll(".key_symbol");   
+    document.querySelectorAll(".key_event").forEach(el => {
+        el.classList.add(el.textContent);
+    })
 }
 genKeyboard("english");
 
@@ -111,7 +119,7 @@ function keyboardHandler (){
     let textAfterCursor = textArea.value.substring(cursorPos);
     let element = event.target;
     
-    if(element.classList.contains("key_symbol") || element.textContent == " "){
+    if(element.classList.contains("key_symbol")){
         textArea.value = textBeforeCursor + element.textContent + textAfterCursor;
         textArea.selectionEnd = cursorPos + 1;
     }else if(element.textContent == "Backspace"){
@@ -148,3 +156,73 @@ function keyboardHandler (){
         }
     }
 }
+
+
+
+
+window.addEventListener('keydown', event => {
+    if(keysCodes.includes(event.keyCode)){
+        i = keysCodes.indexOf(event.keyCode);
+        symbolKeys[i].classList.add("key_active");
+    }else{
+        if(event.key == "Backspace"){
+            document.querySelector(".Backspace").classList.add("key_active");
+        }else if(event.key == "Enter"){
+            document.querySelector(".Enter").classList.add("key_active");
+        }else if(event.key == "Delete"){
+            document.querySelector(".Del").classList.add("key_active");
+        }else if(event.key == "Shift"){
+            document.querySelectorAll(".Shift")[0].classList.add("key_active");
+            document.querySelectorAll(".Shift")[1].classList.add("key_active");
+        }else if(event.key == "Tab"){
+            document.querySelector(".Tab").classList.add("key_active");
+        }else if(event.key == "CapsLock"){
+            document.querySelector(".CapsLock").classList.add("key_active");
+        }else if(event.key == "Alt"){
+            document.querySelector(".Alt").classList.add("key_active");
+        }else if(event.key == "Control"){
+            document.querySelectorAll(".Ctrl")[0].classList.add("key_active");
+            document.querySelectorAll(".Ctrl")[1].classList.add("key_active");
+        }else if(event.key == " "){
+            document.querySelector(".Space").classList.add("key_active");
+        }else if(event.key == "Meta"){
+            document.querySelector(".Win").classList.add("key_active");
+        }
+    }
+});
+
+window.addEventListener('keyup', event => {
+    if(keysCodes.includes(event.keyCode)){
+        i = keysCodes.indexOf(event.keyCode);
+        symbolKeys[i].classList.remove("key_active");
+    }else{
+        if(event.key == "Backspace"){
+            document.querySelector(".Backspace").classList.remove("key_active");
+        }else if(event.key == "Enter"){
+            document.querySelector(".Enter").classList.remove("key_active");
+        }else if(event.key == "Delete"){
+            document.querySelector(".Del").classList.remove("key_active");
+        }else if(event.key == "Shift"){
+            document.querySelectorAll(".Shift")[0].classList.remove("key_active");
+            document.querySelectorAll(".Shift")[1].classList.remove("key_active");
+        }else if(event.key == "Tab"){
+            document.querySelector(".Tab").classList.remove("key_active");
+        }else if(event.key == "CapsLock"){
+            document.querySelector(".CapsLock").classList.remove("key_active");
+        }else if(event.key == "Alt"){
+            document.querySelector(".Alt").classList.remove("key_active");
+        }else if(event.key == "Control"){
+            document.querySelectorAll(".Ctrl")[0].classList.remove("key_active");
+            document.querySelectorAll(".Ctrl")[1].classList.remove("key_active");
+        }else if(event.key == " "){
+            document.querySelector(".Space").classList.remove("key_active");
+        }else if(event.key == "Meta"){
+            document.querySelector(".Win").classList.remove("key_active");
+        }
+    }   
+});
+
+
+window.addEventListener('keydown', event => {
+    console.log(event.key);
+})
