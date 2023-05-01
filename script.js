@@ -1,8 +1,6 @@
 const textArea = document.createElement("textarea");
 document.body.append(textArea);
 
-const parent = textArea.parentNode;
-
 const keysCodes = [192, 49, 50, 51, 52, 53, 54, 55, 56, 57, 48, 189, 187, 81, 87, 69, 82, 84, 89, 85, 73, 79, 80, 219, 221, 220, 65, 83, 68, 70, 71, 72, 74, 75, 76, 186, 222, 90, 88, 67, 86, 66, 78, 77, 188, 190, 191];
 
 const englishSymbols = "`1234567890-=qwertyuiop[]\\asdfghjkl;'zxcvbnm,./";
@@ -12,6 +10,8 @@ const russianSymbols = "ё1234567890-=йцукенгшщзхъ\\фывапрол
 const russianSymbolsShift = 'Ё!"№;%:?*()_+ЙЦУКЕНГШЩЗХЪ/ФЫВАПРОЛДЖЭЯЧСМИТЬБЮ,';
 
 let symbolKeys;
+
+localStorage.setItem("language", "english");
 
 function genSymbolKey(symbol){
     const key = document.createElement("div");
@@ -111,7 +111,7 @@ function genKeyboard(language, shift = false, caps = false){
         el.classList.add(el.textContent);
     })
 }
-genKeyboard("english");
+genKeyboard(localStorage.getItem("language"));
 
 function keyboardHandler (){
     const keyboard = document.querySelector(".keyboard");    
@@ -152,19 +152,19 @@ function keyboardHandler (){
         
         if(element.classList.contains("key_active")){
             keyboard.remove();
-            genKeyboard("english", false, false);
+            genKeyboard(localStorage.getItem("language"), false, false);
         }else{
             keyboard.remove();
-            genKeyboard("english", false, true);
+            genKeyboard(localStorage.getItem("language"), false, true);
         }
     
     }else if(element.textContent == "Shift"){
         if(element.classList.contains("key_active")){
             keyboard.remove();
-            genKeyboard("english", false);
+            genKeyboard(localStorage.getItem("language"), false);
         }else{
             keyboard.remove();
-            genKeyboard("english", true);
+            genKeyboard(localStorage.getItem("language"), true);
         }
     }else if(element.classList.contains("left-arr")){
         textArea.selectionEnd = cursorPos - 1;
@@ -193,10 +193,10 @@ window.addEventListener('keydown', event => {
 
             if(element.classList.contains("key_active")){
                 keyboard.remove();
-                genKeyboard("english", false);
+                genKeyboard(localStorage.getItem("language"), false);
             }else{
                 keyboard.remove();
-                genKeyboard("english", true);
+                genKeyboard(localStorage.getItem("language"), true);
             }
         
         }else if(event.key == "Tab"){
@@ -206,14 +206,24 @@ window.addEventListener('keydown', event => {
             let element = document.querySelector(".CapsLock");
             if(element.classList.contains("key_active")){
                 keyboard.remove();
-                genKeyboard("english", false, false);
+                genKeyboard(localStorage.getItem("language"), false, false);
             }else{
                 keyboard.remove();
-                genKeyboard("english", false, true);
+                genKeyboard(localStorage.getItem("language"), false, true);
             }
         }else if(event.key == "Alt"){
             document.querySelectorAll(".Alt")[0].classList.add("key_active");
             document.querySelectorAll(".Alt")[1].classList.add("key_active");
+            if(document.querySelector(".Ctrl").classList.contains("key_active")){
+                const keyboard = document.querySelector(".keyboard");
+                if(localStorage.language == "english"){
+                    localStorage.setItem("language","russian");
+                }else{
+                    localStorage.setItem("language","english");
+                }
+                keyboard.remove();
+                genKeyboard(localStorage.getItem("language"));
+            }
         }else if(event.key == "Control"){
             document.querySelectorAll(".Ctrl")[0].classList.add("key_active");
             document.querySelectorAll(".Ctrl")[1].classList.add("key_active");
@@ -267,3 +277,7 @@ window.addEventListener('keyup', event => {
         }
     }   
 });
+
+const text = document.createElement("p");
+text.innerHTML = "Клавиатура создана в операционной системе Windows<br>Для переключения языка комбинация: левыe ctrl + alt";
+document.body.prepend(text);
