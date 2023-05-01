@@ -1,13 +1,22 @@
 const textArea = document.createElement("textarea");
 document.body.append(textArea);
 
+const parent = textArea.parentNode;
+
+parent.addEventListener('click', function(event) {
+  const target = event.target;
+  if (target !== textArea && !textArea.contains(target)) {
+    textArea.blur();
+  }
+});
+
 const keysCodes = [192, 49, 50, 51, 52, 53, 54, 55, 56, 57, 48, 189, 187, 81, 87, 69, 82, 84, 89, 85, 73, 79, 80, 219, 221, 220, 65, 83, 68, 70, 71, 72, 74, 75, 76, 186, 222, 90, 88, 67, 86, 66, 78, 77, 188, 190, 191];
 
 const englishSymbols = "`1234567890-=qwertyuiop[]\\asdfghjkl;'zxcvbnm,./";
 const englishSymbolsShift = '~!@#$%^&*()_+QWERTYUIOP{}|ASDFGHJKL:"ZXCVBNM<>?';
 
 const russianSymbols = "ё1234567890-=йцукенгшщзхъ\\фывапролджэячсмитьбю.";
-const russianSymbolsShift = 'Ё!"№;%:?*()_+ЙЦУКЕНГШЩЗХЪ/ФЫВАПРОЛДЖЭЯЧСМИТЬБЮ,'
+const russianSymbolsShift = 'Ё!"№;%:?*()_+ЙЦУКЕНГШЩЗХЪ/ФЫВАПРОЛДЖЭЯЧСМИТЬБЮ,';
 
 let symbolKeys;
 
@@ -136,6 +145,9 @@ function keyboardHandler (){
     }else if(element.textContent == "Enter"){
         textArea.value = textBeforeCursor + "\n" + textAfterCursor;
         textArea.selectionEnd = cursorPos + 1;
+    }else if(element.textContent == "Space"){
+        textArea.value = textBeforeCursor + " " + textAfterCursor;
+        textArea.selectionEnd = cursorPos + 1;
     }else if(element.textContent == "CapsLock"){
         
         if(element.classList.contains("key_active")){
@@ -172,14 +184,32 @@ window.addEventListener('keydown', event => {
         }else if(event.key == "Delete"){
             document.querySelector(".Del").classList.add("key_active");
         }else if(event.key == "Shift"){
-            document.querySelectorAll(".Shift")[0].classList.add("key_active");
-            document.querySelectorAll(".Shift")[1].classList.add("key_active");
+            const keyboard = document.querySelector(".keyboard");  
+            let element = document.querySelectorAll(".Shift")[0];
+
+            if(element.classList.contains("key_active")){
+                keyboard.remove();
+                genKeyboard("english", false);
+            }else{
+                keyboard.remove();
+                genKeyboard("english", true);
+            }
+        
         }else if(event.key == "Tab"){
             document.querySelector(".Tab").classList.add("key_active");
         }else if(event.key == "CapsLock"){
-            document.querySelector(".CapsLock").classList.add("key_active");
+            const keyboard = document.querySelector(".keyboard");  
+            let element = document.querySelector(".CapsLock");
+            if(element.classList.contains("key_active")){
+                keyboard.remove();
+                genKeyboard("english", false, false);
+            }else{
+                keyboard.remove();
+                genKeyboard("english", false, true);
+            }
         }else if(event.key == "Alt"){
-            document.querySelector(".Alt").classList.add("key_active");
+            document.querySelectorAll(".Alt")[0].classList.add("key_active");
+            document.querySelectorAll(".Alt")[1].classList.add("key_active");
         }else if(event.key == "Control"){
             document.querySelectorAll(".Ctrl")[0].classList.add("key_active");
             document.querySelectorAll(".Ctrl")[1].classList.add("key_active");
@@ -202,15 +232,8 @@ window.addEventListener('keyup', event => {
             document.querySelector(".Enter").classList.remove("key_active");
         }else if(event.key == "Delete"){
             document.querySelector(".Del").classList.remove("key_active");
-        }else if(event.key == "Shift"){
-            document.querySelectorAll(".Shift")[0].classList.remove("key_active");
-            document.querySelectorAll(".Shift")[1].classList.remove("key_active");
         }else if(event.key == "Tab"){
             document.querySelector(".Tab").classList.remove("key_active");
-        }else if(event.key == "CapsLock"){
-            document.querySelector(".CapsLock").classList.remove("key_active");
-        }else if(event.key == "Alt"){
-            document.querySelector(".Alt").classList.remove("key_active");
         }else if(event.key == "Control"){
             document.querySelectorAll(".Ctrl")[0].classList.remove("key_active");
             document.querySelectorAll(".Ctrl")[1].classList.remove("key_active");
@@ -218,6 +241,9 @@ window.addEventListener('keyup', event => {
             document.querySelector(".Space").classList.remove("key_active");
         }else if(event.key == "Meta"){
             document.querySelector(".Win").classList.remove("key_active");
+        }else if(event.key == "Alt"){
+            document.querySelectorAll(".Alt")[0].classList.remove("key_active");
+            document.querySelectorAll(".Alt")[1].classList.remove("key_active");
         }
     }   
 });
