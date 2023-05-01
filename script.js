@@ -3,13 +3,6 @@ document.body.append(textArea);
 
 const parent = textArea.parentNode;
 
-parent.addEventListener('click', function(event) {
-  const target = event.target;
-  if (target !== textArea && !textArea.contains(target)) {
-    textArea.blur();
-  }
-});
-
 const keysCodes = [192, 49, 50, 51, 52, 53, 54, 55, 56, 57, 48, 189, 187, 81, 87, 69, 82, 84, 89, 85, 73, 79, 80, 219, 221, 220, 65, 83, 68, 70, 71, 72, 74, 75, 76, 186, 222, 90, 88, 67, 86, 66, 78, 77, 188, 190, 191];
 
 const englishSymbols = "`1234567890-=qwertyuiop[]\\asdfghjkl;'zxcvbnm,./";
@@ -128,6 +121,13 @@ function keyboardHandler (){
     let textAfterCursor = textArea.value.substring(cursorPos);
     let element = event.target;
     
+    if(element.classList.contains("key") && !element.classList.contains("CapsLock") && !element.classList.contains("Shift")){
+        element.classList.add("key_active");
+        setTimeout(() => {
+            element.classList.remove("key_active");
+        }, 100)
+    }
+
     if(element.classList.contains("key_symbol")){
         textArea.value = textBeforeCursor + element.textContent + textAfterCursor;
         textArea.selectionEnd = cursorPos + 1;
