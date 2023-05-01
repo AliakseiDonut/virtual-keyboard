@@ -2,7 +2,7 @@ const textArea = document.createElement("textarea");
 document.body.append(textArea);
 
 const englishSymbols = "`1234567890-=qwertyuiop[]\\asdfghjkl;'zxcvbnm,./";
-const englishSymbolShift = '~!@#$%^&*()_+QWERTYUIOP{}|ASDFGHJKL:"ZXCVBNM<>?';
+const englishSymbolsShift = '~!@#$%^&*()_+QWERTYUIOP{}|ASDFGHJKL:"ZXCVBNM<>?';
 
 const russianSymbols = "ё1234567890-=йцукенгшщзхъ\\фывапролджэячсмитьбю.";
 const russianSymbolsShift = 'Ё!"№;%:?*()_+ЙЦУКЕНГШЩЗХЪ/ФЫВАПРОЛДЖЭЯЧСМИТЬБЮ,'
@@ -21,7 +21,19 @@ function genEventKey(text, size){
     return key;
 }
 
-function genKeyboard(symbols, caps){
+function genKeyboard(language, shift = false, caps = false){
+    let symbols;
+
+    if(language == "english" && shift){
+        symbols = englishSymbolsShift;
+    }else if(language == "english" && !shift){
+        symbols = englishSymbols;
+    }else if(language == "russian" && shift){
+        symbols = russianSymbolsShift;
+    }else if(language == "russian" && !shift){
+        symbols = russianSymbols;
+    }
+    
     const keyboard = document.createElement("div");
     keyboard.className = "keyboard";
 
@@ -46,16 +58,32 @@ function genKeyboard(symbols, caps){
             
             keyboard.append(genEventKey("Del", "size2"), capsLock);
         }else if(i == 36){
-            keyboard.append(genEventKey("Enter", "size4"), genEventKey("Shift", "size5"));
+            const shiftKey = genEventKey("Shift", "size5");
+            
+            if(shift){
+                shiftKey.classList.add("key_active");
+            }else{
+                shiftKey.classList.remove("key_active");
+            }
+            
+            keyboard.append(genEventKey("Enter", "size4"), shiftKey);
         }else if(i == 46){
             const leftArr = genEventKey("▲", "size1");
             const rightArr = genEventKey("▼", "size1");
             leftArr.classList.add("rotate-arr"); 
             rightArr.classList.add("rotate-arr"); 
 
+            const shiftKey = genEventKey("Shift", "size4");
+            
+            if(shift){
+                shiftKey.classList.add("key_active");
+            }else{
+                shiftKey.classList.remove("key_active");
+            }
+
             keyboard.append(
                 genEventKey("▲", "size1"), 
-                genEventKey("Shift", "size4"), 
+                shiftKey, 
                 genEventKey("Ctrl", "size1"), 
                 genEventKey("Win", "size1"), 
                 genEventKey("Alt", "size1"), 
@@ -73,7 +101,7 @@ function genKeyboard(symbols, caps){
     })
     document.body.append(keyboard);
 }
-genKeyboard(englishSymbols, false);
+genKeyboard("english");
 
 function keyboardHandler (){
     const keyboard = document.querySelector(".keyboard");    
@@ -104,11 +132,19 @@ function keyboardHandler (){
         
         if(element.classList.contains("key_active")){
             keyboard.remove();
-            genKeyboard(englishSymbols, false);
+            genKeyboard("english", false, false);
         }else{
             keyboard.remove();
-            genKeyboard(englishSymbols, true);
+            genKeyboard("english", false, true);
         }
     
+    }else if(element.textContent == "Shift"){
+        if(element.classList.contains("key_active")){
+            keyboard.remove();
+            genKeyboard("english", false);
+        }else{
+            keyboard.remove();
+            genKeyboard("english", true);
+        }
     }
 }
