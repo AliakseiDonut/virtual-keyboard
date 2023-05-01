@@ -57,6 +57,11 @@ textarea{
     background-color: rgb(65, 63, 63);
 }
 
+.key_active{
+    background-color: rgb(17, 187, 187);
+    border-radius: 5px;
+}
+
 .keyboard{
     border: 1px solid black;
     display: flex;

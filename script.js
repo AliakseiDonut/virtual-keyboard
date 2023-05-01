@@ -4,7 +4,7 @@ document.body.append(textArea);
 const englishSymbols = "`1234567890-=qwertyuiop[]\\asdfghjkl;'zxcvbnm,./";
 const englishSymbolShift = '~!@#$%^&*()_+QWERTYUIOP{}|ASDFGHJKL:"ZXCVBNM<>?';
 
-const russianSymbols = "ё1234567890-=йцукенгшщзхъ\фывапролджэячсмитьбю.";
+const russianSymbols = "ё1234567890-=йцукенгшщзхъ\\фывапролджэячсмитьбю.";
 const russianSymbolsShift = 'Ё!"№;%:?*()_+ЙЦУКЕНГШЩЗХЪ/ФЫВАПРОЛДЖЭЯЧСМИТЬБЮ,'
 
 function genSymbolKey(symbol){
@@ -21,16 +21,30 @@ function genEventKey(text, size){
     return key;
 }
 
-function genKeyboard(){
+function genKeyboard(symbols, caps){
     const keyboard = document.createElement("div");
     keyboard.className = "keyboard";
 
-    englishSymbols.split("").forEach((el, i) => {
-        keyboard.append(genSymbolKey(el));
+    symbols.split("").forEach((el, i) => {
+        
+        if(!caps){
+            keyboard.append(genSymbolKey(el));
+        }else{
+            keyboard.append(genSymbolKey(el.toUpperCase()));
+        }
+
         if(i == 12){
             keyboard.append(genEventKey("Backspace", "size5"), genEventKey("Tab", "size3"));
         }else if(i == 25){
-            keyboard.append(genEventKey("Del", "size2"), genEventKey("CapsLock", "size5"));
+            const capsLock = genEventKey("CapsLock", "size5");
+            
+            if(caps){
+                capsLock.classList.add("key_active");
+            }else{
+                capsLock.classList.remove("key_active");
+            }
+            
+            keyboard.append(genEventKey("Del", "size2"), capsLock);
         }else if(i == 36){
             keyboard.append(genEventKey("Enter", "size4"), genEventKey("Shift", "size5"));
         }else if(i == 46){
@@ -54,17 +68,16 @@ function genKeyboard(){
             );
         }    
     });
+    keyboard.addEventListener('click', event => {
+        keyboardHandler();
+    })
     document.body.append(keyboard);
 }
+genKeyboard(englishSymbols, false);
 
-genKeyboard();
+function keyboardHandler (){
+    const keyboard = document.querySelector(".keyboard");    
 
-const keyboard = document.querySelector(".keyboard");
-
-
-
-keyboard.addEventListener('click', event => {
-    
     let cursorPos = textArea.selectionStart;
     let textBeforeCursor = textArea.value.substring(0, cursorPos);
     let textAfterCursor = textArea.value.substring(cursorPos);
@@ -84,9 +97,18 @@ keyboard.addEventListener('click', event => {
     }else if(element.textContent == "Tab"){
         textArea.value = textBeforeCursor + "    " + textAfterCursor;
         textArea.selectionEnd = cursorPos + 1;
+    }else if(element.textContent == "Enter"){
+        textArea.value = textBeforeCursor + "\n" + textAfterCursor;
+        textArea.selectionEnd = cursorPos + 1;
+    }else if(element.textContent == "CapsLock"){
+        
+        if(element.classList.contains("key_active")){
+            keyboard.remove();
+            genKeyboard(englishSymbols, false);
+        }else{
+            keyboard.remove();
+            genKeyboard(englishSymbols, true);
+        }
+    
     }
-})
-
-textArea.addEventListener('click', event => {
-
-});
+}
