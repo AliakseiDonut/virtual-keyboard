@@ -1,3 +1,7 @@
+if(!localStorage.language){
+    localStorage.setItem("language", "english");
+}
+
 const textArea = document.createElement("textarea");
 document.body.append(textArea);
 
@@ -110,14 +114,10 @@ function genKeyboard(language, shift = false, caps = false){
     })
 }
 
-if(localStorage.language){
-    genKeyboard(localStorage.language);
-}else{
-    genKeyboard("russian");
-}    
+genKeyboard(localStorage.language);
 
 
-function keyboardHandler (){
+function keyboardHandler (){ 
     const keyboard = document.querySelector(".keyboard");    
 
     let cursorPos = textArea.selectionStart;
@@ -156,19 +156,19 @@ function keyboardHandler (){
         
         if(element.classList.contains("key_active")){
             keyboard.remove();
-            genKeyboard(localStorage.getItem("language"), false, false);
+            genKeyboard(localStorage.language, false, false);
         }else{
             keyboard.remove();
-            genKeyboard(localStorage.getItem("language"), false, true);
+            genKeyboard(localStorage.language, false, true);
         }
     
     }else if(element.textContent == "Shift"){
         if(element.classList.contains("key_active")){
             keyboard.remove();
-            genKeyboard(localStorage.getItem("language"), false);
+            genKeyboard(localStorage.language, false);
         }else{
             keyboard.remove();
-            genKeyboard(localStorage.getItem("language"), true);
+            genKeyboard(localStorage.language, true);
         }
     }else if(element.classList.contains("left-arr")){
         textArea.selectionEnd = cursorPos - 1;
@@ -197,10 +197,10 @@ window.addEventListener('keydown', event => {
 
             if(element.classList.contains("key_active")){
                 keyboard.remove();
-                genKeyboard(localStorage.getItem("language"), false);
+                genKeyboard(localStorage.language, false);
             }else{
                 keyboard.remove();
-                genKeyboard(localStorage.getItem("language"), true);
+                genKeyboard(localStorage.language, true);
             }
         
         }else if(event.key == "Tab"){
@@ -210,10 +210,10 @@ window.addEventListener('keydown', event => {
             let element = document.querySelector(".CapsLock");
             if(element.classList.contains("key_active")){
                 keyboard.remove();
-                genKeyboard(localStorage.getItem("language"), false, false);
+                genKeyboard(localStorage.language, false, false);
             }else{
                 keyboard.remove();
-                genKeyboard(localStorage.getItem("language"), false, true);
+                genKeyboard(localStorage.language, false, true);
             }
         }else if(event.key == "Alt"){
             document.querySelectorAll(".Alt")[0].classList.add("key_active");
@@ -226,7 +226,7 @@ window.addEventListener('keydown', event => {
                     localStorage.setItem("language","english");
                 }
                 keyboard.remove();
-                genKeyboard(localStorage.getItem("language"));
+                genKeyboard(localStorage.language);
             }
         }else if(event.key == "Control"){
             document.querySelectorAll(".Ctrl")[0].classList.add("key_active");
